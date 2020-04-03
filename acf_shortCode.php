@@ -44,7 +44,54 @@ if( $posts ): ?>
 	<?php wp_reset_postdata(); ?>
 <?php endif; ?>
 ----------------------------------------------------------------------------------------------------------
+4. Get Post with Pagination ======= 
 
+<section id="blog-list">
+	<div class="container-fluid">
+		<div class="row">
+			<?php while ( have_posts() ) : the_post(); ?> 
+
+			<?php
+			$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+
+			$args = array( 
+				'post_type'			=> 'post',
+				'posts_per_page'	=> 9,
+				'paged' => $paged
+			);
+
+			$catpost_ = new WP_Query( $args );
+			if ($catpost_->have_posts() ) : while ($catpost_->have_posts() ) : $catpost_->the_post(); ?>
+				<div class="col-lg-4 col-md-4 col-sm-12">
+					<figure class="blogs">
+						<?php the_post_thumbnail('full'); ?>
+					<figcaption>
+						<span><?php echo get_field('release_date'); ?></span>
+						<h3><a href="<?php the_permalink(); ?>">
+							<?php the_title(); ?>
+						</a></h3>
+					</figcaption>
+					</figure>
+				</div>
+			<?php endwhile;  endif; wp_reset_query();?>
+			<?php
+			$big=76;
+				$args = array(
+					'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+					'format'       => '?paged=%#%',
+					'total'        => $catpost_->max_num_pages,
+					'current'      => $paged,
+					'prev_next'    => True,
+					'prev_text'    => __('<i class="fas fa-chevron-left"></i>'),
+					'next_text'    => __('<i class="fas fa-chevron-right"></i>'),
+					'type'         => 'list'); 
+				echo paginate_links( $args );
+			endwhile;
+			?>
+		</div>
+	</div>
+</section>
+----------------------------------------------------------------------------------------------------------
 
 // Display subfiled in Group and repeater 
 
