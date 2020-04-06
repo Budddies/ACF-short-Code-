@@ -44,7 +44,35 @@ if( $posts ): ?>
 	<?php wp_reset_postdata(); ?>
 <?php endif; ?>
 ----------------------------------------------------------------------------------------------------------
-4. Get Post with Pagination ======= 
+4. Get recent post and blog list Post with Pagination ======= 
+
+<section id="recent-post">
+	<div class="container-fluid">
+		<div class="row">
+			<?php
+		    $recent_posts = wp_get_recent_posts(array(
+		        'numberposts' => 1,
+		        'post_status' => 'publish',
+		    ));
+		    foreach($recent_posts as $post) : ?>
+		        <div class="col-lg-7 col-md-6 col-sm-12">
+		        	<div class="recent-post-img text-center">
+		        		<?php echo get_the_post_thumbnail($post['ID'], 'full'); ?>
+		        	</div>
+		        </div>
+
+		        <div class="col-lg-5 col-md-6 col-sm-12 blogs">
+		        	<span class="post-date"><?php echo get_field('release_date', $post['ID']); ?></span>
+		        	<h3><?php echo $post['post_title'] ?></h3>
+		        	<p><?php echo $post['post_excerpt'] ?></p>
+		            <a class="read-more-btn" href="<?php echo get_permalink($post['ID']) ?>">
+		             	read more
+		            </a>
+	        	</div>
+		    <?php endforeach; wp_reset_query(); ?>
+		</div>
+    </div>
+</section>
 
 <section id="blog-list">
 	<div class="container-fluid">
@@ -56,8 +84,9 @@ if( $posts ): ?>
 
 			$args = array( 
 				'post_type'			=> 'post',
+				// 'order' 			=> 'ASC',
 				'posts_per_page'	=> 9,
-				'paged' => $paged
+				'paged' 			=> $paged
 			);
 
 			$catpost_ = new WP_Query( $args );
@@ -91,6 +120,7 @@ if( $posts ): ?>
 		</div>
 	</div>
 </section>
+
 ----------------------------------------------------------------------------------------------------------
 
 // Display subfiled in Group and repeater 
