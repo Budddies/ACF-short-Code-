@@ -86,6 +86,7 @@ if( $posts ): ?>
 				'post_type'			=> 'post',
 				// 'order' 			=> 'ASC',
 				'posts_per_page'	=> 9,
+				//'posts_per_page'	=> ($paged ==1 ? 10 : 9 ),
 				'paged' 			=> $paged
 			);
 
