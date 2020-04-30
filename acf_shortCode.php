@@ -124,6 +124,28 @@ if( $posts ): ?>
 
 ----------------------------------------------------------------------------------------------------------
 
+
+// Get category In the Post.
+<div class="col-lg-12 col-md-12 col-sm-12">
+	<?php
+	    $args = array(
+		'type'                     => 'services',  
+		'order'                    => 'ASC',
+		'taxonomy'                 => 'category',
+		);
+	    $categories = get_categories($args);
+		echo '<ul>';
+		foreach ($categories as $category) {
+		    $url = get_term_link($category);?>
+		    <li><a href="<?php echo $url;?>"><?php echo $category->name; ?></a></li>
+		<?php
+		}
+	    echo '</ul>';
+	?>
+</div>
+
+
+-----------------------------------------------------------------------------------------------------------------------
 // Display subfiled in Group and repeater 
 
 
@@ -175,4 +197,6 @@ if( $posts ): ?>
 		</table>
 	</div>
 <?php endif; // if( get_field('to-do_lists') ): ?>
+
+
 
