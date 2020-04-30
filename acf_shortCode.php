@@ -8,6 +8,11 @@
 2. Any field call on page use below code  ======= 
 <?php the_field('Add your field name'); ?> 
 <!--field name so add your field name in bracket-->
+
+----------------------------------------------------------------------------------------------------------
+// Short Code get contact form, revolution slider, Get post etc etc 
+ <?php echo do_shortcode('[contact-form-7 id="87" title="REQUEST A QUOTE" html_id="wpcf7-f87-o11" html_class="request-form"]');?>
+
 ----------------------------------------------------------------------------------------------------------
 3. Slider  ======= 
 <?php
