@@ -6,7 +6,7 @@
 <?php the_post_thumbnail('full'); ?>
 ----------------------------------------------------------------------------------------------------------
 2. Any field call on page use below code  ======= 
-<?php the_field('Add your field name'); ?> 
+<?php echo get_field('Add your field name'); ?> 
 <!--field name so add your field name in bracket-->
 
 ----------------------------------------------------------------------------------------------------------
