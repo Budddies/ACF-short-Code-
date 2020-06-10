@@ -96,19 +96,27 @@ if( $posts ): ?>
 			);
 
 			$catpost_ = new WP_Query( $args );
-			if ($catpost_->have_posts() ) : while ($catpost_->have_posts() ) : $catpost_->the_post(); ?>
-				<div class="col-lg-4 col-md-4 col-sm-12">
-					<figure class="blogs">
-						<?php the_post_thumbnail('full'); ?>
-					<figcaption>
-						<span><?php echo get_field('release_date'); ?></span>
-						<h3><a href="<?php the_permalink(); ?>">
-							<?php the_title(); ?>
-						</a></h3>
-					</figcaption>
-					</figure>
-				</div>
-			<?php endwhile;  endif; wp_reset_query();?>
+			if ($catpost_->have_posts() ) : 
+			if( $paged ==1 ) : $i=0; else: $i=1; endif;
+				while ($catpost_->have_posts() ) : $catpost_->the_post(); if($i > 0 ){ ?>
+		            <div class="single-post">
+		              <div class="inner">
+		                <span class="pot-date">May 14, 2020</span>
+		                <a href="<?php the_permalink(); ?>">
+		                  <h4>
+		                    <?php the_title(); ?>
+		                  </h4>
+		                </a>
+		                <h6><?php echo get_field('small_title'); ?></h6>
+		                <div class="text color-gray">
+		                  <p><?php the_excerpt(); ?></p>
+		                </div>
+		                <div class="btn-wrapepr">
+		                  <a href="<?php the_permalink(); ?>" class="btn btn-fill bg-black-btn bg-ligt-black-btn"><span><span>Read More</span></span><label></label></a>
+		                </div>
+		              </div>
+		            </div>
+				<?php } $i++; endwhile;  endif; wp_reset_query();?>
 			<?php
 			$big=76;
 				$args = array(
