@@ -136,6 +136,79 @@ if( $posts ): ?>
 </section>
 
 ----------------------------------------------------------------------------------------------------------
+4. Get recent post and blog list Post without Pagination =======
+
+<section class="bg-body blog-section objAnimate-wrapper" data-trigger="1">
+	<div class="container">
+		<div class="first-post box-padding bg-ligt-black page-banner-animate-2">
+			<?php
+			$recent_id='';
+			   $recent_posts = wp_get_recent_posts(array(
+			        'numberposts' => 1,
+			        'post_status' => 'publish',
+					'order'		  => 'DESC'
+		    ));
+		    foreach($recent_posts as $post) : 
+		    	$recent_id=$post['ID'];
+		    	?>
+		     	<span class="pot-date"><?php echo get_field('date',  $post['ID']); ?></span>
+	            <a href="<?php the_permalink($post['ID']); ?>">
+	              <h1><?php echo $post['post_title'] ?></h1>
+	            </a>
+	            <h4><?php echo get_field('small_title',$post['ID']); ?></h4>
+	            <div class="text color-gray">
+	              <p><?php echo $post['post_excerpt'] ?></p>
+	            </div>
+	            <div class="btn-wrapepr">
+	              <a href="<?php the_permalink($post['ID']); ?>" class="btn btn-fill bg-black-btn"><span><span>Read More</span></span><label></label></a>
+	            </div>  
+		    <?php endforeach; wp_reset_query(); ?>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="blog-listing">
+		<?php while ( have_posts() ) : the_post(); ?> 
+			<?php
+			$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+
+			$args = array( 
+				'post_type'			=> 'post',
+				'order' 			=> 'ASC',
+				//'posts_per_page'	=> ($paged ==1 ? 10 : 9 ),
+				'paged' 			=> $paged,
+				'exclude' =>$recent_id,
+			);
+
+			$catpost_ = new WP_Query( $args );
+			if ($catpost_->have_posts() ) : 
+			//if( $paged ==1 ) : $i=0; else: $i=1; endif;
+				while ($catpost_->have_posts() ) : $catpost_->the_post(); //if($i > 0 ){ ?>
+		            <div class="single-post">
+		              <div class="inner">
+		                <span class="pot-date"><?php echo get_field('date'); ?></span>
+		                <a href="<?php the_permalink(); ?>">
+		                  <h4>
+		                    <?php the_title(); ?>
+		                  </h4>
+		                </a>
+		                <h6><?php echo get_field('small_title'); ?></h6>
+		                <div class="text color-gray">
+		                  <p><?php the_excerpt(); ?></p>
+		                </div>
+		                <div class="btn-wrapepr">
+		                  <a href="<?php the_permalink(); ?>" class="btn btn-fill bg-black-btn bg-ligt-black-btn"><span><span>Read More</span></span><label></label></a>
+		                </div>
+		              </div>
+		            </div>
+				<?php //} 
+				$i++; endwhile;  endif; wp_reset_query();?>
+		<?php endwhile; ?>
+		 </div>
+	</div>
+</section>
+
+----------------------------------------------------------------------------------------------------------
 
 
 // Get category In the Post.
