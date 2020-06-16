@@ -138,20 +138,22 @@ if( $posts ): ?>
 ----------------------------------------------------------------------------------------------------------
 4. Get recent post and blog list Post without Pagination =======
 
-<section class="bg-body blog-section objAnimate-wrapper" data-trigger="1">
+<<section class="bg-body blog-section objAnimate-wrapper" data-trigger="1">
 	<div class="container">
 		<div class="first-post box-padding bg-ligt-black page-banner-animate-2">
 			<?php
-			$recent_id='';
+			$recent_id=array();
 			   $recent_posts = wp_get_recent_posts(array(
 			        'numberposts' => 1,
 			        'post_status' => 'publish',
 					'order'		  => 'DESC'
 		    ));
 		    foreach($recent_posts as $post) : 
-		    	$recent_id=$post['ID'];
+		    	$recent_id[]=$post['ID'];
 		    	?>
-		     	<span class="pot-date"><?php echo get_field('date',  $post['ID']); ?></span>
+		     	<span class="pot-date">
+		     		<?php echo get_the_date('F j Y', $post['ID']); ?>
+		     	</span>
 	            <a href="<?php the_permalink($post['ID']); ?>">
 	              <h1><?php echo $post['post_title'] ?></h1>
 	            </a>
@@ -168,25 +170,24 @@ if( $posts ): ?>
 
 	<div class="container">
 		<div class="blog-listing">
-		<?php while ( have_posts() ) : the_post(); ?> 
+		
 			<?php
 			$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 			$args = array( 
-				'post_type'			=> 'post',
-				'order' 			=> 'ASC',
-				//'posts_per_page'	=> ($paged ==1 ? 10 : 9 ),
-				'paged' 			=> $paged,
-				'exclude' =>$recent_id,
+				'post_type'		 => 'post',
+				'order' 		 => 'ASC',
+				'paged' 		 => $paged,
+				'posts_per_page' => -1,
+				'post__not_in'   =>$recent_id,
 			);
 
 			$catpost_ = new WP_Query( $args );
 			if ($catpost_->have_posts() ) : 
-			//if( $paged ==1 ) : $i=0; else: $i=1; endif;
-				while ($catpost_->have_posts() ) : $catpost_->the_post(); //if($i > 0 ){ ?>
+				while ($catpost_->have_posts() ) : $catpost_->the_post();  ?>
 		            <div class="single-post">
 		              <div class="inner">
-		                <span class="pot-date"><?php echo get_field('date'); ?></span>
+		                <span class="pot-date"><?php echo get_the_date('F j Y', get_the_ID()); ?></span>
 		                <a href="<?php the_permalink(); ?>">
 		                  <h4>
 		                    <?php the_title(); ?>
@@ -201,9 +202,8 @@ if( $posts ): ?>
 		                </div>
 		              </div>
 		            </div>
-				<?php //} 
+				<?php 
 				$i++; endwhile;  endif; wp_reset_query();?>
-		<?php endwhile; ?>
 		 </div>
 	</div>
 </section>
